@@ -1,3 +1,21 @@
 spring:
   application:
     name: loginsight
+  datasource:
+    url: jdbc:postgresql://localhost:5432/loginsight
+    username: yerin   # 👈 너 맥 계정 (whoami로 확인)
+    password: 1234        # 👈 비밀번호 없으면 비워도 됨
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update   # 개발용 (자동 테이블 생성)
+    show-sql: true       # SQL 로그 출력
+    properties:
+      hibernate:
+        format_sql: true
+
+
+
+server:
+  port: 8080

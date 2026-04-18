@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Date;
 import javax.crypto.SecretKey;
 
@@ -12,7 +11,6 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -81,11 +79,11 @@ public class JwtTokenConfig {
     }
 
     public Authentication getAuthentication(String token) {
-        String userId = getUserId(token);
+        CustomUserPrincipal principal = new CustomUserPrincipal(getUserId(token));
         return new UsernamePasswordAuthenticationToken(
-                userId,
+                principal,
                 null,
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+                principal.getAuthorities()
         );
     }
 

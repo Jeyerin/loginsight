@@ -2,13 +2,16 @@ package com.back.loginsight.service;
 
 import com.back.loginsight.common.ApiResponse;
 import com.back.loginsight.config.JwtTokenConfig;
+import com.back.loginsight.dto.request.UserInfoRequest;
 import com.back.loginsight.dto.request.UserJoinRequest;
 import com.back.loginsight.dto.request.UserLoginRequest;
 import com.back.loginsight.dto.response.LoginResponse;
+import com.back.loginsight.dto.response.UserInfoResponse;
 import com.back.loginsight.entity.User;
 import com.back.loginsight.repository.UserRepository;
 import java.util.concurrent.TimeUnit;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -69,4 +72,29 @@ public class UserServiceImpl implements UserService {
         redisTemplate.delete("refresh:" + loginId);
         return ApiResponse.success("로그아웃 완료", loginId);
     }
+
+    @Override
+    @Transactional
+    public ApiResponse<String> updateUser(String loginId, UserInfoRequest request) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
+
+        user.updateInfo(request);
+        return ApiResponse.success("회원정보 수정 완료", loginId);
+    }
+
+    @Override
+    public ApiResponse<UserInfoResponse> getUserInfo(String loginId) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
+
+        UserInfoResponse response = new UserInfoResponse(
+                user.getName(),
+                user.getEmail(),
+                user.getPhoneNumber()
+        );
+
+        return ApiResponse.success("사용자 정보 조회 완료", response);
+    }
+
 }

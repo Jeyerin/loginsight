@@ -1,12 +1,12 @@
 package com.back.loginsight.entity;
 
 import com.back.loginsight.dto.request.UserJoinRequest;
+import com.back.loginsight.dto.request.UserInfoRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -69,5 +69,14 @@ public class User {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .build();
+    }
+
+    public void updateInfo(UserInfoRequest request) {
+        if (request.getEmail() != null) {
+            this.email = request.getEmail();
+        }
+        if (request.getPhoneNumber() != null) {
+            this.phoneNumber = request.getPhoneNumber();
+        }
     }
 }

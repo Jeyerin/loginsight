@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local secrets / OS files ###
+.env
+python_service/.env
+.DS_Store

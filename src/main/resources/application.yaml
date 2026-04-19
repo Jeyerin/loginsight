@@ -25,6 +25,12 @@ jwt:
   access-token-expiration: 3600000
   refresh-token-expiration: 1209600000
 
+log-analysis:
+  python:
+    host: localhost
+    port: 8000
+    path: /analyze
+
 logging:
   level:
     org.hibernate.SQL: debug
